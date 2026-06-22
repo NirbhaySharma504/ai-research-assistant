@@ -1,0 +1,48 @@
+"""Provider-agnostic LLM factory.
+
+Every agent calls get_llm() instead of instantiating a provider directly, so the
+whole pipeline can switch between local Ollama (llama3.2:3b) and hosted Groq
+(llama-3.3-70b) with a single env var (LLM_PROVIDER). The RAGAS judge prefers Groq
+for reliable structured output and falls back to Ollama when no Groq key is set.
+"""
+
+from functools import lru_cache
+
+from backend.config import settings
+
+
+def get_llm(temperature: float = 0.3, provider: str | None = None):
+    """Return a LangChain chat model for the configured (or overridden) provider."""
+    provider = (provider or settings.LLM_PROVIDER).lower()
+
+    if provider == "groq":
+        if not settings.GROQ_API_KEY:
+            raise ValueError("LLM_PROVIDER=groq but GROQ_API_KEY is not set")
+        from langchain_groq import ChatGroq
+
+        return ChatGroq(
+            model=settings.GROQ_MODEL,
+            temperature=temperature,
+            api_key=settings.GROQ_API_KEY,
+        )
+
+    from langchain_ollama import ChatOllama
+
+    return ChatOllama(
+        model=settings.OLLAMA_MODEL,
+        temperature=temperature,
+        base_url=settings.OLLAMA_BASE_URL,
+    )
+
+
+@lru_cache(maxsize=1)
+def get_judge_llm():
+    """LLM used by RAGAS as the evaluation judge.
+
+    Groq's larger model produces far more reliable structured output than a local
+    3B model, which matters because RAGAS otherwise returns NaN scores. Falls back
+    to Ollama only when no Groq key is available.
+    """
+    if settings.GROQ_API_KEY:
+        return get_llm(temperature=0.0, provider="groq")
+    return get_llm(temperature=0.0, provider="ollama")
