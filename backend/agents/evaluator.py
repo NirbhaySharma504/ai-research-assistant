@@ -29,10 +29,14 @@ def evaluator_node(state: ResearchState) -> dict:
         from ragas.llms import LangchainLLMWrapper
         from ragas.metrics import (
             answer_relevancy,
-            context_precision,
             faithfulness,
         )
+        # Reference-free precision: we have no ground-truth answer, so the standard
+        # context_precision (which needs a `reference` column) can't be used.
+        from ragas.metrics import LLMContextPrecisionWithoutReference
         from langchain_core.embeddings import Embeddings
+
+        context_precision = LLMContextPrecisionWithoutReference()
 
         contexts = [c["content"] for c in state["retrieved_content"][:10]]
         dataset = EvaluationDataset.from_list([
@@ -61,10 +65,20 @@ def evaluator_node(state: ResearchState) -> dict:
             embeddings=embeddings,
         )
         df = result.to_pandas()
+
+        # Metric column names vary by ragas version / metric class (e.g.
+        # LLMContextPrecisionWithoutReference -> "llm_context_precision_..."),
+        # so resolve each score by substring match instead of hardcoding.
+        def _by(substr: str):
+            for col in df.columns:
+                if substr in col:
+                    return _clean(df[col].iloc[0])
+            return None
+
         scores = {
-            "faithfulness": _clean(df["faithfulness"].iloc[0]),
-            "answer_relevancy": _clean(df["answer_relevancy"].iloc[0]),
-            "context_precision": _clean(df["context_precision"].iloc[0]),
+            "faithfulness": _by("faithfulness"),
+            "answer_relevancy": _by("answer_relevancy"),
+            "context_precision": _by("context_precision"),
         }
         return {"ragas_scores": scores, "status": "done"}
     except Exception as e:  # noqa: BLE001 - evaluation must never fail the run

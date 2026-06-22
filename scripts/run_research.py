@@ -23,9 +23,13 @@ def main():
     graph = build_research_graph()
     state = initial_state(query, session_id, max_iterations)
 
-    final = None
+    # stream yields per-node deltas (default "updates" mode); accumulate them so
+    # `final` holds the complete state (final_answer comes from synthesizer, but
+    # ragas_scores from the later evaluator step).
+    final = dict(state)
     for step in graph.stream(state):
         node, update = next(iter(step.items()))
+        final.update(update)
         status = update.get("status", "")
         extra = ""
         if node == "planner":
@@ -35,7 +39,6 @@ def main():
         elif node == "fact_checker":
             extra = f"{len(update.get('verified_claims', []))} verified claims total"
         print(f"[{node:<12}] status={status} {extra}")
-        final = update
 
     print("\n" + "=" * 70)
     print("FINAL ANSWER\n")
