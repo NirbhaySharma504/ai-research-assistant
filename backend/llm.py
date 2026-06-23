@@ -11,7 +11,7 @@ from functools import lru_cache
 from backend.config import settings
 
 
-def get_llm(temperature: float = 0.3, provider: str | None = None):
+def get_llm(temperature: float = 0.3, provider: str | None = None, model: str | None = None):
     """Return a LangChain chat model for the configured (or overridden) provider."""
     provider = (provider or settings.LLM_PROVIDER).lower()
 
@@ -21,9 +21,10 @@ def get_llm(temperature: float = 0.3, provider: str | None = None):
         from langchain_groq import ChatGroq
 
         return ChatGroq(
-            model=settings.GROQ_MODEL,
+            model=model or settings.GROQ_MODEL,
             temperature=temperature,
             api_key=settings.GROQ_API_KEY,
+            max_retries=8,  # ride out free-tier 429s (used heavily as the RAGAS judge)
         )
 
     from langchain_ollama import ChatOllama
@@ -39,10 +40,24 @@ def get_llm(temperature: float = 0.3, provider: str | None = None):
 def get_judge_llm():
     """LLM used by RAGAS as the evaluation judge.
 
-    Groq's larger model produces far more reliable structured output than a local
-    3B model, which matters because RAGAS otherwise returns NaN scores. Falls back
-    to Ollama only when no Groq key is available.
+    Reliable structured output matters here: a weak judge makes RAGAS return NaN
+    (notably for context precision). Preference order:
+      1. OpenRouter (pay-per-use, gpt-4o-mini) — most reliable, used for benchmarking
+      2. Groq (free tier) — fast but the small models NaN context precision
+      3. local Ollama — always available, noisier
     """
+    if settings.OPENROUTER_API_KEY:
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(
+            model=settings.OPENROUTER_JUDGE_MODEL,
+            temperature=0.0,
+            api_key=settings.OPENROUTER_API_KEY,
+            base_url=settings.OPENROUTER_BASE_URL,
+            max_retries=5,
+        )
     if settings.GROQ_API_KEY:
-        return get_llm(temperature=0.0, provider="groq")
+        return get_llm(
+            temperature=0.0, provider="groq", model=settings.GROQ_JUDGE_MODEL
+        )
     return get_llm(temperature=0.0, provider="ollama")

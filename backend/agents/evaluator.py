@@ -38,7 +38,13 @@ def evaluator_node(state: ResearchState) -> dict:
 
         context_precision = LLMContextPrecisionWithoutReference()
 
-        contexts = [c["content"] for c in state["retrieved_content"][:10]]
+        # Evaluate against the chunks actually fed to the synthesizer (focused,
+        # semantically-retrieved units) rather than whole scraped pages -- this is
+        # what RAG context precision is meant to measure. Fall back to pages only if
+        # the synthesizer didn't record its contexts.
+        contexts = state.get("synthesis_contexts") or [
+            c["content"] for c in state["retrieved_content"][:10]
+        ]
         dataset = EvaluationDataset.from_list([
             {
                 "user_input": state["query"],
@@ -58,11 +64,18 @@ def evaluator_node(state: ResearchState) -> dict:
         judge = LangchainLLMWrapper(get_judge_llm())
         embeddings = LangchainEmbeddingsWrapper(_MiniLM())
 
+        # Serialize judge calls + back off on 429s. RAGAS otherwise fires many
+        # concurrent calls per metric, which blows hosted free-tier rate limits
+        # (Groq TPM) and silently NaNs every score.
+        from ragas.run_config import RunConfig
+
+        run_config = RunConfig(max_workers=1, max_retries=3, max_wait=20, timeout=120)
         result = evaluate(
             dataset=dataset,
             metrics=[faithfulness, answer_relevancy, context_precision],
             llm=judge,
             embeddings=embeddings,
+            run_config=run_config,
         )
         df = result.to_pandas()
 

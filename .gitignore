@@ -7,3 +7,5 @@ research.db
 .pytest_cache/
 .DS_Store
 *.egg-info/
+.streamlit/secrets.toml
+.hf_cache/

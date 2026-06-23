@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.git/
+.env
+chroma_db/
+*.db
+.hf_cache/
+.pytest_cache/
+*.md
+!requirements.txt

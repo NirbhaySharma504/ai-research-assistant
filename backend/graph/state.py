@@ -51,6 +51,8 @@ class ResearchState(TypedDict):
     # --- SYNTHESIZER OUTPUT ---
     final_answer: str                 # markdown
     citations: List[dict]             # [{number, url, title, quote}]
+    synthesis_contexts: List[str]     # the actual RAG chunks fed to the synthesizer
+                                      # (used as RAGAS retrieved_contexts, not full pages)
 
     # --- EVALUATION ---
     ragas_scores: Optional[dict]

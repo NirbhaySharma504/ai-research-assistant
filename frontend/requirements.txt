@@ -1,0 +1,4 @@
+# Frontend-only deps — keeps the Streamlit image small (no torch/chromadb).
+streamlit>=1.39.0
+websocket-client>=1.8.0
+requests>=2.32.0

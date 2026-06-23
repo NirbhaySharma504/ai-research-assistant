@@ -1,0 +1,266 @@
+{
+  "full::What are the main causes of climate change?": {
+    "variant": "full",
+    "question": "What are the main causes of climate change?",
+    "ragas_scores": {
+      "faithfulness": 0.85,
+      "answer_relevancy": 0.944,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 14
+  },
+  "full::How do mRNA vaccines work?": {
+    "variant": "full",
+    "question": "How do mRNA vaccines work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.942,
+      "context_precision": 0.824
+    },
+    "source_count": 2,
+    "n_verified_claims": 15
+  },
+  "full::What caused the 2008 global financial crisis?": {
+    "variant": "full",
+    "question": "What caused the 2008 global financial crisis?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.965,
+      "context_precision": 1.0
+    },
+    "source_count": 1,
+    "n_verified_claims": 14
+  },
+  "full::What are the health effects of intermittent fasting?": {
+    "variant": "full",
+    "question": "What are the health effects of intermittent fasting?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 15
+  },
+  "full::How does the CRISPR gene-editing technology work?": {
+    "variant": "full",
+    "question": "How does the CRISPR gene-editing technology work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.835,
+      "context_precision": 0.952
+    },
+    "source_count": 3,
+    "n_verified_claims": 15
+  },
+  "full::What are the environmental impacts of lithium mining?": {
+    "variant": "full",
+    "question": "What are the environmental impacts of lithium mining?",
+    "ragas_scores": {
+      "faithfulness": 0.957,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.909
+    },
+    "source_count": 3,
+    "n_verified_claims": 8
+  },
+  "full::What are the main arguments for and against nuclear energy?": {
+    "variant": "full",
+    "question": "What are the main arguments for and against nuclear energy?",
+    "ragas_scores": {
+      "faithfulness": 0.944,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.557
+    },
+    "source_count": 3,
+    "n_verified_claims": 16
+  },
+  "full::How does inflation affect the average household?": {
+    "variant": "full",
+    "question": "How does inflation affect the average household?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 15
+  },
+  "full::What are the leading theories on the origin of the Moon?": {
+    "variant": "full",
+    "question": "What are the leading theories on the origin of the Moon?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.997,
+      "context_precision": 1.0
+    },
+    "source_count": 1,
+    "n_verified_claims": 16
+  },
+  "full::What are the security risks of large language models?": {
+    "variant": "full",
+    "question": "What are the security risks of large language models?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.994,
+      "context_precision": 0.95
+    },
+    "source_count": 3,
+    "n_verified_claims": 14
+  },
+  "full::How does intermittent reinforcement affect behavior?": {
+    "variant": "full",
+    "question": "How does intermittent reinforcement affect behavior?",
+    "ragas_scores": {
+      "faithfulness": 0.944,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.486
+    },
+    "source_count": 1,
+    "n_verified_claims": 14
+  },
+  "full::What are the economic effects of remote work?": {
+    "variant": "full",
+    "question": "What are the economic effects of remote work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.987
+    },
+    "source_count": 2,
+    "n_verified_claims": 15
+  },
+  "no_factcheck::What are the main causes of climate change?": {
+    "variant": "no_factcheck",
+    "question": "What are the main causes of climate change?",
+    "ragas_scores": {
+      "faithfulness": 0.706,
+      "answer_relevancy": 0.894,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::How do mRNA vaccines work?": {
+    "variant": "no_factcheck",
+    "question": "How do mRNA vaccines work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.931
+    },
+    "source_count": 2,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What caused the 2008 global financial crisis?": {
+    "variant": "no_factcheck",
+    "question": "What caused the 2008 global financial crisis?",
+    "ragas_scores": {
+      "faithfulness": 0.667,
+      "answer_relevancy": 0.976,
+      "context_precision": 1.0
+    },
+    "source_count": 0,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What are the health effects of intermittent fasting?": {
+    "variant": "no_factcheck",
+    "question": "What are the health effects of intermittent fasting?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "context_precision": 1.0
+    },
+    "source_count": 3,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::How does the CRISPR gene-editing technology work?": {
+    "variant": "no_factcheck",
+    "question": "How does the CRISPR gene-editing technology work?",
+    "ragas_scores": {
+      "faithfulness": 0.88,
+      "answer_relevancy": 0.917,
+      "context_precision": 0.982
+    },
+    "source_count": 3,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What are the environmental impacts of lithium mining?": {
+    "variant": "no_factcheck",
+    "question": "What are the environmental impacts of lithium mining?",
+    "ragas_scores": {
+      "faithfulness": 0.938,
+      "answer_relevancy": 0.995,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What are the main arguments for and against nuclear energy?": {
+    "variant": "no_factcheck",
+    "question": "What are the main arguments for and against nuclear energy?",
+    "ragas_scores": {
+      "faithfulness": 0.857,
+      "answer_relevancy": 1.0,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::How does inflation affect the average household?": {
+    "variant": "no_factcheck",
+    "question": "How does inflation affect the average household?",
+    "ragas_scores": {
+      "faithfulness": 0.957,
+      "answer_relevancy": 0.876,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What are the leading theories on the origin of the Moon?": {
+    "variant": "no_factcheck",
+    "question": "What are the leading theories on the origin of the Moon?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.88,
+      "context_precision": 1.0
+    },
+    "source_count": 3,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What are the security risks of large language models?": {
+    "variant": "no_factcheck",
+    "question": "What are the security risks of large language models?",
+    "ragas_scores": {
+      "faithfulness": 0.92,
+      "answer_relevancy": 0.958,
+      "context_precision": 1.0
+    },
+    "source_count": 3,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::How does intermittent reinforcement affect behavior?": {
+    "variant": "no_factcheck",
+    "question": "How does intermittent reinforcement affect behavior?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.959,
+      "context_precision": 0.982
+    },
+    "source_count": 3,
+    "n_verified_claims": 0
+  },
+  "no_factcheck::What are the economic effects of remote work?": {
+    "variant": "no_factcheck",
+    "question": "What are the economic effects of remote work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 1.0
+    },
+    "source_count": 2,
+    "n_verified_claims": 0
+  }
+}
