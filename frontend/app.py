@@ -84,9 +84,21 @@ def run_research(query: str, max_iterations: int, progress_box) -> dict | None:
 def render_result(result: dict) -> None:
     scores = result.get("ragas_scores") or {}
     c1, c2, c3 = st.columns(3)
-    c1.metric("Faithfulness", _fmt(scores.get("faithfulness")))
-    c2.metric("Answer Relevancy", _fmt(scores.get("answer_relevancy")))
-    c3.metric("Context Precision", _fmt(scores.get("context_precision")))
+    c1.metric(
+        "Faithfulness", _fmt(scores.get("faithfulness")),
+        help="How well the answer is grounded in the retrieved sources "
+             "(0–1; higher = fewer unsupported claims).",
+    )
+    c2.metric(
+        "Answer Relevancy", _fmt(scores.get("answer_relevancy")),
+        help="How directly the answer addresses the question "
+             "(0–1; higher = more on-topic).",
+    )
+    c3.metric(
+        "Context Precision", _fmt(scores.get("context_precision")),
+        help="How relevant the retrieved context is to the question "
+             "(0–1; higher = less off-topic retrieval).",
+    )
 
     st.markdown("### 📋 Answer")
     st.markdown(result.get("final_answer") or "_No answer generated._")
@@ -155,7 +167,7 @@ query = st.text_area(
     placeholder="e.g. What are the main causes of climate change?",
     height=90,
 )
-go = st.button("🚀 Research", type="primary", disabled=not backend_ok)
+go = st.button("Research", type="primary", disabled=not backend_ok)
 
 if go and query.strip():
     st.markdown("#### ⏳ Progress")

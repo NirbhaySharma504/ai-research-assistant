@@ -1,6 +1,6 @@
 # 🔬 AI Research Assistant
 
-![CI](https://github.com/USERNAME/ai-research-assistant/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/NirbhaySharma504/ai-research-assistant/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![LangGraph](https://img.shields.io/badge/LangGraph-multi--agent-orange)
 
@@ -8,6 +8,13 @@ A **multi-agent research system** that takes a question, autonomously plans and
 executes web research, fact-checks its findings against the sources it retrieved,
 and produces a **fully-cited synthesized answer** — then grades its own output with
 **RAGAS** quality metrics.
+
+## 🎥 Demo
+
+[![AI Research Assistant — demo walkthrough](https://img.youtube.com/vi/QoKrNUio_0M/hqdefault.jpg)](https://youtu.be/QoKrNUio_0M)
+
+▶️ **[Watch the walkthrough](https://youtu.be/QoKrNUio_0M)** — live agent-by-agent
+progress streaming, the final cited answer, and the RAGAS self-evaluation scores.
 
 ## ❓ Why this exists
 
@@ -21,8 +28,9 @@ as importantly, **measures the quality of its own answers** with RAGAS so reliab
 is a number, not a vibe. It's built to demonstrate three things that matter in real
 AI engineering: (1) **orchestrating multiple agents** with explicit control flow and a
 verification loop, (2) **grounding** every answer in retrieved sources with inline
-citations (RAG), and (3) **evaluating** the system rigorously — including an
-**ablation** that proves the fact-checking agent measurably improves faithfulness.
+citations (RAG), and (3) **evaluating** the system rigorously — including a
+fact-checker **ablation** and an honest read of where the metrics (and the metric
+*tooling*) have limits.
 
 Built on **LangGraph** with a swappable LLM backend (local **Ollama** `llama3.1:8b`
 on GPU, or hosted **Groq** `llama-3.3-70b`), a per-session **ChromaDB** vector store
@@ -100,32 +108,38 @@ fact-checking agent:
 
 | Variant | N | Faithfulness | Answer Relevancy | Context Precision |
 |---------|:-:|:-:|:-:|:-:|
-| **full** (with fact-checker) | 12 | **1.000** (0.975) | **0.921** (0.631) | **0.970** (0.889) |
-| no_factcheck (ablation) | 12 | 0.948 (0.910) | 0.958 (0.871) | 1.000 (0.991) |
+| **full** (with fact-checker) | 12 | **0.978** (0.936) | **0.957** (0.774) | **0.974** (0.964) |
+| no_factcheck (ablation) | 12 | 0.976 (0.908) | 0.834 (0.604) | 0.982 (0.937) |
 
-**Ablation — what the fact-checker buys (median Δ):**
+**Controlled ablation — both variants synthesized & scored over the _identical_
+retrieved corpus** (built once per question; only the fact-checker's verified claims
+differ — avg 13/answer vs 0). Δ = full − no_factcheck:
 
-| Metric | full | no_factcheck | Δ |
-|--------|:-:|:-:|:-:|
-| faithfulness | 1.000 | 0.948 | **+0.052** |
-| answer_relevancy | 0.921 | 0.958 | −0.037 |
-| context_precision | 0.970 | 1.000 | −0.030 |
+| Metric | Δ median | Δ mean |
+|--------|:-:|:-:|
+| faithfulness | +0.002 | +0.028 |
+| answer_relevancy | +0.123 | +0.170 |
+| context_precision | −0.008 | +0.027 |
 
-> **Takeaway:** the fact-checking agent **measurably improves faithfulness** — the
-> metric that most directly reflects "can you trust this answer" — at no real cost to
-> relevancy or precision.
+> **Takeaway:** with retrieval held identical, the fact-checking agent gives a
+> **small but consistent improvement** — answer relevancy and faithfulness both rise,
+> context precision is unchanged. The verified claims give the synthesizer focused,
+> cross-checked facts to anchor the answer.
 >
 > **Reading the numbers honestly:**
-> - *Faithfulness* median pins to 1.000 because **8 of 12** queries scored a perfect
->   1.0; the **mean 0.975** (min 0.85) better reflects the spread.
-> - *Answer relevancy*'s low mean (0.631) comes from **4 of 12** queries scoring
->   exactly `0.0`. I re-ran and read each: all four were substantive (1.6k–2.6k chars)
->   and directly on-topic — RAGAS's *noncommittal* classifier misfired (2 scored
->   0.95–1.0 on a re-run). **Excluding these tool artifacts, mean relevancy = 0.947
->   vs no_factcheck 0.950** — the fact-checker doesn't degrade relevancy; the gap was
->   entirely the spurious zeros. Median (0.921) is the robust headline.
+> - The relevancy gap looks large by mean (+0.170) but that's **inflated by RAGAS
+>   artifacts**: its *noncommittal* classifier spuriously scores `0.0` on some
+>   genuinely relevant answers (`no_factcheck` hit 4 such, `full` 2 — all confirmed
+>   on-topic; answers saved in [`results.json`](benchmark/results.json)). Excluding
+>   those zeros, mean relevancy is **0.929 (full) vs 0.906 (no_factcheck), a +0.023
+>   effect** — real but modest. The robust **median is +0.123**.
+> - *Faithfulness* median 0.978 (6/12 perfect 1.0); the controlled +0.028 mean is the
+>   honest size of the fact-checker's grounding benefit.
+> - Earlier, an *uncontrolled* ablation (two independent pipelines) buried this signal
+>   in web-retrieval variance — fixing the experiment design surfaced it.
 >
-> Full per-query distribution analysis in [`benchmark/RESULTS.md`](benchmark/RESULTS.md).
+> Full per-query analysis + saved answers in
+> [`benchmark/RESULTS.md`](benchmark/RESULTS.md) / [`results.json`](benchmark/results.json).
 <!-- RESULTS:END -->
 
 > Faithfulness = answer is grounded in retrieved context · Answer relevancy = answer
@@ -150,12 +164,13 @@ benchmark) or a [Groq key](https://console.groq.com); without either, RAGAS fall
 back to the local model.
 
 ```bash
-git clone <your-repo-url> && cd ai-research-assistant
+git clone https://github.com/NirbhaySharma504/ai-research-assistant.git
+cd ai-research-assistant
 
 python3.12 -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip && pip install -r requirements.txt
 
-cp .env.example .env        # then fill in TAVILY_API_KEY (and optionally GROQ_API_KEY)
+cp .env.example .env        # add TAVILY_API_KEY (and OPENROUTER_API_KEY for RAGAS eval)
 
 # Local model (GPU auto-detected on Linux):
 ollama pull llama3.1:8b
@@ -208,9 +223,10 @@ hosting tiers — the recommended setup is a **deployed Streamlit frontend** tal
    see [`.streamlit/secrets.toml.example`](.streamlit/secrets.toml.example).
 
 The frontend resolves its backend from `BACKEND_URL` (env var → Streamlit secret →
-`localhost`), so the same code runs locally and in the cloud unchanged. For a demo
-that always works without a running backend, a short screen recording / GIF of a live
-run is the most reliable option.
+`localhost`), so the same code runs locally and in the cloud unchanged. Since the
+backend's GPU dependency makes an always-on public demo impractical on free tiers, the
+[demo video](https://youtu.be/QoKrNUio_0M) is the canonical "see it working" artifact,
+with the local quickstart above as the interactive path.
 
 ## 🔭 Observability
 
@@ -237,14 +253,15 @@ and the full research → fact-check → synthesize path.
 
 | Variable | Default | Notes |
 |----------|---------|-------|
-| `LLM_PROVIDER` | `ollama` | `ollama` (local) or `groq` (hosted). |
+| `LLM_PROVIDER` | `ollama` | `ollama` (local) or `groq` (hosted) — the pipeline LLM. |
 | `OLLAMA_MODEL` | `llama3.1:8b` | Local model. |
 | `OPENROUTER_API_KEY` | — | Preferred RAGAS judge (`gpt-4o-mini`); most reliable. |
 | `GROQ_API_KEY` | — | Alternative judge + hosted LLM-provider swap. |
 | `TAVILY_API_KEY` | — | **Required** for web search. |
 | `MAX_RESULTS_PER_SEARCH` | `5` | Tavily results per query. |
 | `CHUNK_SIZE` / `CHUNK_OVERLAP` | `512` / `50` | RAG chunking. |
-| `RETRIEVAL_TOP_K` | `15` | Chunks fed to the synthesizer. |
+| `RETRIEVAL_TOP_K` | `8` | Chunks retrieved for the synthesizer. |
+| `CONTEXT_MAX_DISTANCE` | `0.70` | Cosine-distance ceiling for a chunk to count as relevant (improves context precision). |
 
 ---
 

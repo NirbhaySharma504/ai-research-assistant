@@ -3,34 +3,73 @@
     "variant": "full",
     "question": "What are the main causes of climate change?",
     "ragas_scores": {
-      "faithfulness": 0.85,
-      "answer_relevancy": 0.944,
+      "faithfulness": 0.733,
+      "answer_relevancy": 0.888,
+      "context_precision": 0.939
+    },
+    "source_count": 6,
+    "n_verified_claims": 14,
+    "answer_preview": "**Causes of Climate Change**\n\nThe primary driver of climate change today is human emissions of greenhouse gases [1]. The main contributors to these emissions are:\n\n* Burning fossil fuels, such as coal, oil, and gas\n* Producing materials like steel, cement, and plastics\n* Growing food for consumption\n\nThese activities release large amounts of CO2 and other greenhouse gases like methane and nitrous oxide into the atmosphere [1].\n\n**Sectoral Breakdown**\n\nThe sectors that contribute most to greenhouse gas emissions are:\n\n* Electricity generation (34% of global GHG emissions)\n* Transport (24% of gl"
+  },
+  "no_factcheck::What are the main causes of climate change?": {
+    "variant": "no_factcheck",
+    "question": "What are the main causes of climate change?",
+    "ragas_scores": {
+      "faithfulness": 0.688,
+      "answer_relevancy": 0.857,
       "context_precision": 1.0
     },
-    "source_count": 2,
-    "n_verified_claims": 14
+    "source_count": 6,
+    "n_verified_claims": 0,
+    "answer_preview": "**Causes of Climate Change**\n\n### Human Emissions of Greenhouse Gases\n\nHuman emissions of greenhouse gases are the primary driver of climate change today [1]. CO2 and other greenhouse gases like methane and nitrous oxide are emitted when we burn fossil fuels, produce materials such as steel, cement, and plastics, and grow the food we eat.\n\n### Sectoral Breakdown of Emissions\n\nThe top 10 emitters contribute 76% of global CO2 emissions [5]. The five sectors responsible for the most greenhouse gas emissions globally are:\n\n* Electricity\n* Transport\n* Land use\n* Industry (including production of ma"
   },
   "full::How do mRNA vaccines work?": {
     "variant": "full",
     "question": "How do mRNA vaccines work?",
     "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.942,
-      "context_precision": 0.824
+      "faithfulness": 0.947,
+      "answer_relevancy": 0.961,
+      "context_precision": 1.0
     },
-    "source_count": 2,
-    "n_verified_claims": 15
+    "source_count": 3,
+    "n_verified_claims": 16,
+    "answer_preview": "**How mRNA Vaccines Work**\n\nmRNA vaccines work by delivering a piece of genetic material called messenger RNA (mRNA) into cells. This mRNA contains the instructions for producing a specific protein, which is then created by the cell's ribosomes [1].\n\nThe mRNA vaccine delivers the mRNA to the ribosome in the cytoplasm of the cell, rather than the nucleus where DNA is housed [1]. The resulting protein is identical to a viral or bacterial protein and triggers an immune response when it leaves the cell [1].\n\n**History of mRNA Vaccine Development**\n\nThe concept of using mRNA as a vaccine was first "
+  },
+  "no_factcheck::How do mRNA vaccines work?": {
+    "variant": "no_factcheck",
+    "question": "How do mRNA vaccines work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.941,
+      "context_precision": 0.858
+    },
+    "source_count": 3,
+    "n_verified_claims": 0,
+    "answer_preview": "**How mRNA Vaccines Work**\n\nmRNA vaccines work by delivering a piece of genetic material called messenger RNA (mRNA) into cells [1]. The mRNA contains the instructions for making a specific protein, which is then produced by the cell's ribosomes. This protein is identical to one found on the surface of a virus or other pathogen, and the immune system recognizes it as foreign [1].\n\n**The History of mRNA Vaccines**\n\nThe concept of using mRNA vaccines dates back to 1990, when researchers successfully used mRNA to make a protein in mouse cells [2]. This led to the idea that a living animal's cells"
   },
   "full::What caused the 2008 global financial crisis?": {
     "variant": "full",
     "question": "What caused the 2008 global financial crisis?",
     "ragas_scores": {
       "faithfulness": 1.0,
-      "answer_relevancy": 0.965,
-      "context_precision": 1.0
+      "answer_relevancy": 0.976,
+      "context_precision": 0.916
     },
-    "source_count": 1,
-    "n_verified_claims": 14
+    "source_count": 3,
+    "n_verified_claims": 8,
+    "answer_preview": "**Causes of the 2008 Global Financial Crisis**\n\n### **Credit Default Swaps and Systemic Risk**\n\nThe 2008 global financial crisis was caused, at least in part, by the role of credit default swaps (CDS). [9] These financial contracts allowed investors to \"bet\" on whether a borrower would default on its loan. [3] However, the lack of transparency in this large market posed a systemic risk. [2]\n\n### **Notional Value and Regulatory Response**\n\nAs of June 2018, there was \"$8 trillion notional value outstanding\" in CDS contracts. [11] In response to concerns about systemic risk, regulators gained gre"
+  },
+  "no_factcheck::What caused the 2008 global financial crisis?": {
+    "variant": "no_factcheck",
+    "question": "What caused the 2008 global financial crisis?",
+    "ragas_scores": {
+      "faithfulness": 0.765,
+      "answer_relevancy": 0.976,
+      "context_precision": 0.95
+    },
+    "source_count": 3,
+    "n_verified_claims": 0,
+    "answer_preview": "**Causes of the 2008 Global Financial Crisis**\n\nThe 2008 global financial crisis was caused by a combination of factors, with credit default swaps (CDS) playing a significant role. [1] The large notional value of CDS outstanding, which reached \"$8 trillion\" as of June 2018,[11] posed a systemic risk to the economy.\n\n**Lack of Transparency and Systemic Risk**\n\nThe lack of transparency in the CDS market became a concern for regulators during the crisis.[2] This lack of transparency could lead to a situation where large banks, which traded in CDS, were forced to declare bankruptcy when a large nu"
   },
   "full::What are the health effects of intermittent fasting?": {
     "variant": "full",
@@ -38,131 +77,11 @@
     "ragas_scores": {
       "faithfulness": 1.0,
       "answer_relevancy": 0.0,
-      "context_precision": 1.0
+      "context_precision": 0.962
     },
-    "source_count": 2,
-    "n_verified_claims": 15
-  },
-  "full::How does the CRISPR gene-editing technology work?": {
-    "variant": "full",
-    "question": "How does the CRISPR gene-editing technology work?",
-    "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.835,
-      "context_precision": 0.952
-    },
-    "source_count": 3,
-    "n_verified_claims": 15
-  },
-  "full::What are the environmental impacts of lithium mining?": {
-    "variant": "full",
-    "question": "What are the environmental impacts of lithium mining?",
-    "ragas_scores": {
-      "faithfulness": 0.957,
-      "answer_relevancy": 1.0,
-      "context_precision": 0.909
-    },
-    "source_count": 3,
-    "n_verified_claims": 8
-  },
-  "full::What are the main arguments for and against nuclear energy?": {
-    "variant": "full",
-    "question": "What are the main arguments for and against nuclear energy?",
-    "ragas_scores": {
-      "faithfulness": 0.944,
-      "answer_relevancy": 0.0,
-      "context_precision": 0.557
-    },
-    "source_count": 3,
-    "n_verified_claims": 16
-  },
-  "full::How does inflation affect the average household?": {
-    "variant": "full",
-    "question": "How does inflation affect the average household?",
-    "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.9,
-      "context_precision": 1.0
-    },
-    "source_count": 2,
-    "n_verified_claims": 15
-  },
-  "full::What are the leading theories on the origin of the Moon?": {
-    "variant": "full",
-    "question": "What are the leading theories on the origin of the Moon?",
-    "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.997,
-      "context_precision": 1.0
-    },
-    "source_count": 1,
-    "n_verified_claims": 16
-  },
-  "full::What are the security risks of large language models?": {
-    "variant": "full",
-    "question": "What are the security risks of large language models?",
-    "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.994,
-      "context_precision": 0.95
-    },
-    "source_count": 3,
-    "n_verified_claims": 14
-  },
-  "full::How does intermittent reinforcement affect behavior?": {
-    "variant": "full",
-    "question": "How does intermittent reinforcement affect behavior?",
-    "ragas_scores": {
-      "faithfulness": 0.944,
-      "answer_relevancy": 0.0,
-      "context_precision": 0.486
-    },
-    "source_count": 1,
-    "n_verified_claims": 14
-  },
-  "full::What are the economic effects of remote work?": {
-    "variant": "full",
-    "question": "What are the economic effects of remote work?",
-    "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.0,
-      "context_precision": 0.987
-    },
-    "source_count": 2,
-    "n_verified_claims": 15
-  },
-  "no_factcheck::What are the main causes of climate change?": {
-    "variant": "no_factcheck",
-    "question": "What are the main causes of climate change?",
-    "ragas_scores": {
-      "faithfulness": 0.706,
-      "answer_relevancy": 0.894,
-      "context_precision": 1.0
-    },
-    "source_count": 2,
-    "n_verified_claims": 0
-  },
-  "no_factcheck::How do mRNA vaccines work?": {
-    "variant": "no_factcheck",
-    "question": "How do mRNA vaccines work?",
-    "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 1.0,
-      "context_precision": 0.931
-    },
-    "source_count": 2,
-    "n_verified_claims": 0
-  },
-  "no_factcheck::What caused the 2008 global financial crisis?": {
-    "variant": "no_factcheck",
-    "question": "What caused the 2008 global financial crisis?",
-    "ragas_scores": {
-      "faithfulness": 0.667,
-      "answer_relevancy": 0.976,
-      "context_precision": 1.0
-    },
-    "source_count": 0,
-    "n_verified_claims": 0
+    "source_count": 5,
+    "n_verified_claims": 14,
+    "answer_preview": "**Introduction**\nIntermittent fasting has been extensively studied for its potential health benefits, with research suggesting improvements in various conditions such as obesity, diabetes, cardiovascular disease, cancers, and neurological disorders [12].\n\n**Health Effects of Intermittent Fasting**\n\n* **Blood Pressure**: Large decreases in blood pressure have been consistently observed, with further studies planned to determine the extent to which this is due to weight loss versus fasting duration [2].\n* **Oxidative Stress**: Intermittent fasting has been shown to lower oxidative stress, which "
   },
   "no_factcheck::What are the health effects of intermittent fasting?": {
     "variant": "no_factcheck",
@@ -170,97 +89,202 @@
     "ragas_scores": {
       "faithfulness": 1.0,
       "answer_relevancy": 0.0,
+      "context_precision": 0.874
+    },
+    "source_count": 5,
+    "n_verified_claims": 0,
+    "answer_preview": "**Health Effects of Intermittent Fasting**\n\nIntermittent fasting has been shown to have numerous health benefits, including:\n\n* **Weight Loss**: Hundreds of animal studies and scores of human clinical trials have demonstrated that intermittent fasting can lead to improvements in weight-related conditions such as obesity [4].\n* **Improved Blood Pressure**: Large decreases in blood pressure have been consistently observed with intermittent fasting, although the extent to which this is due to weight loss vs. fasting duration requires further research [2].\n* **Reduced Oxidative Stress**: Intermitt"
+  },
+  "full::How does the CRISPR gene-editing technology work?": {
+    "variant": "full",
+    "question": "How does the CRISPR gene-editing technology work?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.714,
       "context_precision": 1.0
     },
     "source_count": 3,
-    "n_verified_claims": 0
+    "n_verified_claims": 7,
+    "answer_preview": "**Introduction**\nCRISPR gene-editing technology is a powerful tool used to edit the genome of various species, including crops. This technology has shown promise in improving crop yields, reducing gluten content in wheat, and extending the shelf life of mushrooms.\n\n**How CRISPR Works**\n\nCRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) is a gene-editing tool that uses an enzyme called Cas9 to make precise cuts in the DNA at specific locations [5]. This allows researchers to introduce desired changes into the genome, such as removing gluten from wheat or improving crop yields.\n"
   },
   "no_factcheck::How does the CRISPR gene-editing technology work?": {
     "variant": "no_factcheck",
     "question": "How does the CRISPR gene-editing technology work?",
     "ragas_scores": {
-      "faithfulness": 0.88,
-      "answer_relevancy": 0.917,
+      "faithfulness": 0.727,
+      "answer_relevancy": 0.79,
       "context_precision": 0.982
     },
     "source_count": 3,
-    "n_verified_claims": 0
+    "n_verified_claims": 0,
+    "answer_preview": "**Introduction**\nCRISPR (Clustered Regularly Interspaced Short Palindromic Repeats) gene-editing technology is a powerful tool for editing the genome of various species, including plants. This technology has been used to edit citrus species, tomatoes, wheat, and mushrooms, among others.\n\n**How CRISPR Works**\nCRISPR-Cas9 editing involves using a guide RNA (gRNA) that locates a specific sequence in the genome and cuts it, allowing for the insertion of new genetic material or the deletion of existing genes [5]. This process can be used to introduce desirable traits into crops, such as improved yi"
+  },
+  "full::What are the environmental impacts of lithium mining?": {
+    "variant": "full",
+    "question": "What are the environmental impacts of lithium mining?",
+    "ragas_scores": {
+      "faithfulness": 0.957,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.962
+    },
+    "source_count": 5,
+    "n_verified_claims": 15,
+    "answer_preview": "**Environmental Impacts of Lithium Mining**\n\nLithium mining, crucial for battery technology and renewable energy, has significant environmental impacts despite being more environmentally friendly than fossil fuel extraction [2]. The extraction process results in soil degradation, water shortages, biodiversity loss, damage to ecosystem functions, and global warming [3].\n\n**Water Pollution and Habitat Destruction**\n\nThe brine mining process, which involves extracting lithium from underground saltwater reserves, poses a risk of polluting local water sources [5]. This is evident in examples such a"
   },
   "no_factcheck::What are the environmental impacts of lithium mining?": {
     "variant": "no_factcheck",
     "question": "What are the environmental impacts of lithium mining?",
     "ragas_scores": {
-      "faithfulness": 0.938,
-      "answer_relevancy": 0.995,
+      "faithfulness": 0.952,
+      "answer_relevancy": 1.0,
       "context_precision": 1.0
     },
-    "source_count": 2,
-    "n_verified_claims": 0
+    "source_count": 5,
+    "n_verified_claims": 0,
+    "answer_preview": "**Environmental Impacts of Lithium Mining**\n\nLithium mining has significant environmental impacts, including habitat destruction, water pollution, and other ecological concerns [2]. Although lithium and cobalt mining produce lower carbon emissions compared to fossil fuel extraction, they still have substantial environmental effects [2].\n\n**Water Use and Pollution**\n\nThe process of brine mining, which involves extracting lithium from underground saltwater reserves, poses risks to local water sources [5]. Pumping saltwater to the surface for evaporation can lead to pollution and potential ground"
+  },
+  "full::What are the main arguments for and against nuclear energy?": {
+    "variant": "full",
+    "question": "What are the main arguments for and against nuclear energy?",
+    "ragas_scores": {
+      "faithfulness": 0.818,
+      "answer_relevancy": 0.985,
+      "context_precision": 1.0
+    },
+    "source_count": 4,
+    "n_verified_claims": 15,
+    "answer_preview": "**Arguments For Nuclear Energy**\n\nNuclear energy has several advantages that make it a viable option for meeting global energy demands. Some of the key benefits include:\n\n* **Carbon-free electricity**: Nuclear energy produces massive amounts of carbon-free electricity, which is essential for protecting air quality [6].\n* **Reliability and scalability**: Nuclear power plants can operate continuously, providing a reliable source of energy, and their capacity can be scaled up or down as needed.\n* **Low operating costs**: Once built, nuclear power plants have low operating costs, making them a cos"
   },
   "no_factcheck::What are the main arguments for and against nuclear energy?": {
     "variant": "no_factcheck",
     "question": "What are the main arguments for and against nuclear energy?",
     "ragas_scores": {
-      "faithfulness": 0.857,
-      "answer_relevancy": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.811,
+      "context_precision": 0.826
+    },
+    "source_count": 4,
+    "n_verified_claims": 0,
+    "answer_preview": "**Arguments For Nuclear Energy**\n\nNuclear energy has several advantages that make it an attractive source of power. One of its main benefits is that it produces massive amounts of carbon-free electricity [6], which can help protect air quality and contribute to a cleaner environment. In fact, nuclear energy is considered one of the cleanest sources of energy available today [8]. It also powers communities in 28 U.S. states and has various non-electric applications, such as medical field and space exploration [6].\n\n**Arguments Against Nuclear Energy**\n\nOn the other hand, there are several conce"
+  },
+  "full::How does inflation affect the average household?": {
+    "variant": "full",
+    "question": "How does inflation affect the average household?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.822,
       "context_precision": 1.0
     },
-    "source_count": 2,
-    "n_verified_claims": 0
+    "source_count": 5,
+    "n_verified_claims": 15,
+    "answer_preview": "**Inflation's Impact on American Households**\n\nInflation affects households through its interaction with the fiscal system [N: 3]. The post-COVID price surge has reignited interest in inflation's impact on American households, particularly in how it affects different income groups.\n\n**Distributional Effects of Inflation**\n\nLow-income households are more vulnerable to inflation, especially in energy and food prices, as they spend a higher proportion of their total consumption expenditure on essentials [N: 5]. This is because low-income households tend to save less and are more subject to liquid"
   },
   "no_factcheck::How does inflation affect the average household?": {
     "variant": "no_factcheck",
     "question": "How does inflation affect the average household?",
     "ragas_scores": {
-      "faithfulness": 0.957,
+      "faithfulness": 1.0,
       "answer_relevancy": 0.876,
       "context_precision": 1.0
     },
-    "source_count": 2,
-    "n_verified_claims": 0
+    "source_count": 5,
+    "n_verified_claims": 0,
+    "answer_preview": "**Inflation's Impact on American Households**\n=============================================\n\n### Overview\n\nThe impact of inflation on American households is a significant concern, particularly during periods of high price growth. Research has shown that inflation affects households through its interaction with the fiscal system [3].\n\n### Distributional Effects of Inflation\n--------------------------------------\n\nStudies have found that low-income households are more vulnerable to inflation, especially in energy and food prices [4]. These households spend a larger share of their income on essen"
+  },
+  "full::What are the leading theories on the origin of the Moon?": {
+    "variant": "full",
+    "question": "What are the leading theories on the origin of the Moon?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 1.0
+    },
+    "source_count": 6,
+    "n_verified_claims": 14,
+    "answer_preview": "**Introduction**\nThe origin of the Moon has been a subject of scientific inquiry for centuries, with various theories emerging to explain its formation and relationship with Earth.\n\n**Leading Theories on Lunar Origin**\n\n* **Fission Theory**: Suggests that the Moon separated from a rapidly spinning early Earth [3].\n* **Capture Theory**: Proposes that the Moon was formed elsewhere in the solar system and was later captured by Earth's gravity [3].\n* **Condensation Theory**: \u00c9douard Roche suggested that the Moon was formed at the same time as Earth, but evolved differently over time [4].\n\n**Giant-"
   },
   "no_factcheck::What are the leading theories on the origin of the Moon?": {
     "variant": "no_factcheck",
     "question": "What are the leading theories on the origin of the Moon?",
     "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.88,
-      "context_precision": 1.0
+      "faithfulness": 0.826,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.982
     },
-    "source_count": 3,
-    "n_verified_claims": 0
+    "source_count": 6,
+    "n_verified_claims": 0,
+    "answer_preview": "**Lunar Origin Theories**\n=====================================\n\nThe formation of the Moon is a complex and multifaceted topic that has been studied extensively by scientists. Various theories have emerged over the years to explain its origin.\n\n### Fission Theory\n-----------------\n\nThe fission theory proposes that the Moon separated from a rapidly spinning early Earth [3]. This theory suggests that the Earth's rotation was so rapid that it caused the planet to bulge at the equator, eventually leading to the separation of the Moon.\n\n### Capture Theory\n----------------\n\nThe capture theory propos"
+  },
+  "full::What are the security risks of large language models?": {
+    "variant": "full",
+    "question": "What are the security risks of large language models?",
+    "ragas_scores": {
+      "faithfulness": 0.818,
+      "answer_relevancy": 0.994,
+      "context_precision": 0.841
+    },
+    "source_count": 5,
+    "n_verified_claims": 14,
+    "answer_preview": "**Security Risks of Large Language Models**\n\nLarge language models (LLMs) have introduced critical security and risk considerations that warrant careful examination [2]. These risks are inherent in the complex architecture of LLMs, which store and process massive amounts of data [5].\n\n**Data Breaches**\n\nOne significant security risk associated with LLMs is data breaches. Hackers can gain unauthorized access to the model's data or manipulate model inputs or outputs, compromising both the model's integrity and the confidential data it holds [6]. Effective security measures are crucial for preven"
   },
   "no_factcheck::What are the security risks of large language models?": {
     "variant": "no_factcheck",
     "question": "What are the security risks of large language models?",
     "ragas_scores": {
-      "faithfulness": 0.92,
-      "answer_relevancy": 0.958,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.994,
       "context_precision": 1.0
     },
-    "source_count": 3,
-    "n_verified_claims": 0
+    "source_count": 5,
+    "n_verified_claims": 0,
+    "answer_preview": "**Introduction**\nLarge language models (LLMs) have revolutionized Natural Language Processing (NLP), but their security risks warrant careful examination.\n\n**Security Risks of Large Language Models**\n\n* LLMs store and process massive amounts of data, making them prime targets for [6] **data breaches**.\n* Hackers can compromise both the model's integrity and the confidential data it holds through unauthorized access or manipulation of model inputs or outputs.\n* LLMs are vulnerable to **prompt injection attacks**, which allow hackers to inject malicious prompts that can be used to extract sensit"
+  },
+  "full::How does intermittent reinforcement affect behavior?": {
+    "variant": "full",
+    "question": "How does intermittent reinforcement affect behavior?",
+    "ragas_scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.953,
+      "context_precision": 0.961
+    },
+    "source_count": 5,
+    "n_verified_claims": 12,
+    "answer_preview": "**Introduction**\nIntermittent reinforcement is a type of schedule of reinforcement where the delivery of a reinforcer is not continuous, but rather occurs at irregular intervals. This can have significant effects on behavior.\n\n**Understanding Reinforcement**\n\nReinforcement is a crucial concept in operant conditioning and behavior modification [2]. It refers to consequences that increase the likelihood of an organism's future behavior, typically in the presence of a particular antecedent stimulus [4].\n\n**Intermittent Reinforcement Effects**\n\nResearch has shown that intermittent reinforcement ca"
   },
   "no_factcheck::How does intermittent reinforcement affect behavior?": {
     "variant": "no_factcheck",
     "question": "How does intermittent reinforcement affect behavior?",
     "ragas_scores": {
-      "faithfulness": 1.0,
-      "answer_relevancy": 0.959,
-      "context_precision": 0.982
+      "faithfulness": 0.938,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.771
     },
-    "source_count": 3,
-    "n_verified_claims": 0
+    "source_count": 5,
+    "n_verified_claims": 0,
+    "answer_preview": "**Introduction**\nReinforcement is a crucial concept in operant conditioning and behavior modification, with applications in various fields such as parenting, coaching, therapy, self-help, education, and management [2].\n\n**Terminology**\nReinforcement refers to consequences that increase the likelihood of an organism's future behavior, typically in the presence of a particular antecedent stimulus [4]. For example, a rat can be trained to push a lever to receive food whenever a light is turned on.\n\n**Effect of Intermittent Reinforcement**\nIntermittent reinforcement affects behavior by influencing"
+  },
+  "full::What are the economic effects of remote work?": {
+    "variant": "full",
+    "question": "What are the economic effects of remote work?",
+    "ragas_scores": {
+      "faithfulness": 0.957,
+      "answer_relevancy": 0.0,
+      "context_precision": 0.987
+    },
+    "source_count": 4,
+    "n_verified_claims": 15,
+    "answer_preview": "**The Economic Effects of Remote Work**\n=====================================================\n\n### Introduction\n\nThe relationship between remote work and productivity is a complex one, with mixed findings in the literature. This comprehensive answer aims to provide an overview of the economic effects of remote work.\n\n### Productivity Gains from Remote Work\n\nResearch suggests that remote work can lead to productivity gains due to increased autonomy, reduced commute times, and minimized workplace distractions [6]. However, these gains may not materialize immediately, but rather over time as work"
   },
   "no_factcheck::What are the economic effects of remote work?": {
     "variant": "no_factcheck",
     "question": "What are the economic effects of remote work?",
     "ragas_scores": {
       "faithfulness": 1.0,
-      "answer_relevancy": 1.0,
+      "answer_relevancy": 0.0,
       "context_precision": 1.0
     },
-    "source_count": 2,
-    "n_verified_claims": 0
+    "source_count": 4,
+    "n_verified_claims": 0,
+    "answer_preview": "**Introduction**\n===============\n\nThe economic effects of remote work have been a subject of ongoing debate among researchers. The challenge lies in determining when, how, and for whom remote work supports or undermines productivity [1].\n\n**Productivity Gains from Remote Work**\n=====================================\n\nResearch suggests that productivity gains from changes in remote work ability do not materialize immediately, but rather are subject to some lags [2]. This delay may explain why previous studies have struggled to find consistent results. However, it is likely that these productivit"
   }
 }

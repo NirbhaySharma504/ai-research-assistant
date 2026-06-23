@@ -63,7 +63,13 @@ def run_streaming(
 
     for step in _graph(with_fact_checker).stream(state):
         node, update = next(iter(step.items()))
-        final.update(update)
+        # stream "updates" mode yields each node's delta; retrieved_content has an
+        # operator.add reducer in-graph, so accumulate it here too (don't overwrite).
+        for k, v in update.items():
+            if k == "retrieved_content" and isinstance(v, list):
+                final[k] = final.get(k, []) + v
+            else:
+                final[k] = v
         emit(
             {
                 "type": "progress",
@@ -75,3 +81,35 @@ def run_streaming(
         )
 
     return final
+
+
+def run_ablation_pair(
+    query: str, session_id: str, max_iterations: int = 3
+) -> tuple[dict, dict]:
+    """Controlled fact-checker ablation over an IDENTICAL retrieved corpus.
+
+    Runs the full pipeline once (planner → research → fact-check → synthesize →
+    evaluate), then re-synthesizes & re-evaluates on the SAME ChromaDB session with the
+    verified claims removed. Because both variants retrieve from the same corpus, the
+    only changed variable is the fact-checker's verified_claims — removing the
+    retrieval variance that confounds running two independent pipelines.
+
+    Returns (full_state, no_factcheck_state).
+    """
+    from backend.agents.evaluator import evaluator_node
+    from backend.agents.synthesizer import synthesizer_node
+
+    full = run_streaming(query, session_id, max_iterations, with_fact_checker=True)
+
+    # Same session/corpus, but drop the verified claims and re-synthesize + re-score.
+    nofc = dict(full)
+    nofc.update(
+        verified_claims=[],
+        final_answer="",
+        citations=[],
+        synthesis_contexts=[],
+        ragas_scores=None,
+    )
+    nofc.update(synthesizer_node(nofc))
+    nofc.update(evaluator_node(nofc))
+    return full, nofc

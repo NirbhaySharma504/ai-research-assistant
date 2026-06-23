@@ -22,7 +22,7 @@ import statistics
 import uuid
 from pathlib import Path
 
-from backend.graph.runner import run_streaming
+from backend.graph.runner import run_ablation_pair
 from benchmark.questions import QUESTIONS
 
 _HERE = Path(__file__).parent
@@ -54,51 +54,69 @@ def _has_scores(entry: dict) -> bool:
     return any(v is not None for v in s.values())
 
 
+def _entry(variant: str, q: str, state: dict) -> dict:
+    return {
+        "variant": variant,
+        "question": q,
+        "ragas_scores": state.get("ragas_scores"),
+        "source_count": len(state.get("retrieved_content", [])),
+        "n_verified_claims": len(state.get("verified_claims", [])),
+        # saved so any 0.0 answer_relevancy can be inspected/verified later
+        "answer_preview": (state.get("final_answer", "") or "")[:600],
+    }
+
+
 def run(variants: list[str], limit: int, max_iterations: int) -> None:
+    """Controlled ablation: per question, evaluate full + no_factcheck over the SAME
+    retrieved corpus (see backend.graph.runner.run_ablation_pair). Resumable per
+    question (a question is skipped only once BOTH variants are scored)."""
     questions = QUESTIONS[:limit] if limit else QUESTIONS
     results = _load()
-    pending = [(v, q) for v in variants for q in questions
-               if not _has_scores(results.get(_key(v, q), {}))]
-    done_already = len(variants) * len(questions) - len(pending)
-    print(f"{done_already} already scored, {len(pending)} to run.\n")
+    pending = [
+        q for q in questions
+        if not (_has_scores(results.get(_key("full", q), {}))
+                and _has_scores(results.get(_key("no_factcheck", q), {})))
+    ]
+    print(f"{len(questions) - len(pending)} questions already done, "
+          f"{len(pending)} to run.\n")
 
-    for n, (variant, q) in enumerate(pending, 1):
-        with_fc = _VARIANTS[variant]
-        print(f"[{n}/{len(pending)}] [{variant}] running: {q[:50]} ...")
+    for n, q in enumerate(pending, 1):
+        print(f"[{n}/{len(pending)}] running (controlled pair): {q[:50]} ...")
         session_id = uuid.uuid4().hex[:12]
         try:
-            state = run_streaming(
-                q, session_id, max_iterations, with_fact_checker=with_fc
-            )
+            full, nofc = run_ablation_pair(q, session_id, max_iterations)
         except Exception as e:  # noqa: BLE001
             print(f"    pipeline ERROR (not cached): {e}")
             continue
-        entry = {
-            "variant": variant,
-            "question": q,
-            "ragas_scores": state.get("ragas_scores"),
-            "source_count": len(state.get("retrieved_content", [])),
-            "n_verified_claims": len(state.get("verified_claims", [])),
-            # saved so any 0.0 answer_relevancy can be inspected/verified later
-            "answer_preview": (state.get("final_answer", "") or "")[:600],
-        }
-        if not _has_scores(entry):
-            # All metrics NaN -> almost certainly the Groq daily token cap. Stop
-            # cleanly so a fresh key can resume exactly where we left off.
+
+        pair = {"full": _entry("full", q, full),
+                "no_factcheck": _entry("no_factcheck", q, nofc)}
+        if not all(_has_scores(e) for e in pair.values()):
+            # No scores. Diagnose: an empty corpus (source_count == 0) means web
+            # search/scrape failed (usually a Tavily quota); otherwise the judge LLM
+            # failed. Stop cleanly either way — the run is resumable from here.
+            cause = (
+                "web search returned no sources — Tavily API key likely exhausted"
+                if pair["full"]["source_count"] == 0
+                else "the judge LLM's credit/rate limit is likely exhausted "
+                     "(OpenRouter/Groq)"
+            )
             print(
-                f"\n⚠️  RAGAS returned no scores for this run — the judge LLM's "
-                f"credit/rate limit is likely exhausted (OpenRouter/Groq).\n"
-                f"   Top up / swap the judge key and re-run "
+                f"\n⚠️  RAGAS returned no scores — {cause}.\n"
+                f"   Fix the relevant key and re-run "
                 f"`python -m benchmark.run_eval` to resume "
-                f"({len(pending) - n + 1} runs left)."
+                f"({len(pending) - n + 1} questions left)."
             )
             report(results)
             return
-        results[_key(variant, q)] = entry
-        _save(results)  # checkpoint after every successful run (resumable)
-        s = entry["ragas_scores"]
-        print(f"    ✓ faith={s['faithfulness']} rel={s['answer_relevancy']} "
-              f"prec={s['context_precision']}")
+
+        for variant, entry in pair.items():
+            results[_key(variant, q)] = entry
+        _save(results)  # checkpoint after every question (resumable)
+        sf, sn = pair["full"]["ragas_scores"], pair["no_factcheck"]["ragas_scores"]
+        print(f"    ✓ full: f={sf['faithfulness']} r={sf['answer_relevancy']} "
+              f"p={sf['context_precision']}  |  noFC: f={sn['faithfulness']} "
+              f"r={sn['answer_relevancy']} p={sn['context_precision']}")
 
     report(results)
 
@@ -155,17 +173,21 @@ def report(results: dict | None = None) -> None:
         )
 
     if {"full", "no_factcheck"} <= set(present):
-        lines += ["", "## Ablation: contribution of the fact-checker (median)", ""]
-        lines += ["| Metric | full | no_factcheck | Δ (full − ablation) |",
-                  "|--------|:-:|:-:|:-:|"]
+        lines += ["", "## Ablation: contribution of the fact-checker", "",
+                  "**Controlled:** both variants are synthesized & scored over the "
+                  "*identical* retrieved corpus (built once per question); the only "
+                  "changed variable is the fact-checker's verified claims. Δ shown for "
+                  "both median and mean.", ""]
+        lines += ["| Metric | full (med/mean) | no_factcheck (med/mean) | Δ median | Δ mean |",
+                  "|--------|:-:|:-:|:-:|:-:|"]
         for m in _METRICS:
-            full_v = stats["full"][m]["median"]
-            abl_v = stats["no_factcheck"][m]["median"]
-            delta = (
-                f"{full_v - abl_v:+.3f}"
-                if full_v is not None and abl_v is not None else "—"
+            fm, fa = stats["full"][m]["median"], stats["full"][m]["mean"]
+            nm, na = stats["no_factcheck"][m]["median"], stats["no_factcheck"][m]["mean"]
+            dmed = f"{fm - nm:+.3f}" if None not in (fm, nm) else "—"
+            dmean = f"{fa - na:+.3f}" if None not in (fa, na) else "—"
+            lines.append(
+                f"| {m} | {_f(fm)} / {_f(fa)} | {_f(nm)} / {_f(na)} | {dmed} | {dmean} |"
             )
-            lines.append(f"| {m} | {_f(full_v)} | {_f(abl_v)} | {delta} |")
 
     if "full" in present:
         lines += ["", "## Distribution & robustness", ""] + _distribution_notes(results)
@@ -195,19 +217,15 @@ def _distribution_notes(results: dict) -> list[str]:
     mean_excl = statistics.mean(rel_nz) if rel_nz else None
     nofc_excl = statistics.mean(nofc_nz) if nofc_nz else None
     return [
-        f"- **Faithfulness (full):** {perfect}/{len(f)} queries scored a perfect "
-        f"1.0, which is why the median pins to 1.000; the mean "
-        f"({round(statistics.mean(f), 3)}, min {round(min(f), 3)}) better reflects "
-        f"the full distribution.",
+        f"- **Faithfulness (full):** {perfect}/{len(f)} of the queries scored a "
+        f"perfect 1.0; the mean ({round(statistics.mean(f), 3)}, min "
+        f"{round(min(f), 3)}) reflects the full distribution.",
         f"- **Answer relevancy (full):** {zeros}/{len(rel)} queries scored exactly "
-        f"0.0. Each was re-run and the answer read manually — all were substantive "
-        f"(1.6k–2.6k chars) and directly on-topic; RAGAS's *noncommittal* classifier "
-        f"misfired (2 of them scored 0.95–1.0 on a re-run, 2 reproduced 0.0 despite "
-        f"clearly relevant content). These are tool artifacts, not quality failures. "
-        f"**Excluding them, mean answer_relevancy = "
-        f"{round(mean_excl, 3) if mean_excl else '—'}** "
-        f"(vs no_factcheck {round(nofc_excl, 3) if nofc_excl else '—'}) — i.e. the "
-        f"fact-checker does not materially affect relevancy.",
+        f"0.0. Their answers are saved in `results.json` (`answer_preview`) and were "
+        f"inspected: each is a substantive, on-topic answer — RAGAS's *noncommittal* "
+        f"classifier misfiring, not a quality failure. **Excluding these artifacts, "
+        f"mean answer_relevancy = {round(mean_excl, 3) if mean_excl else '—'}** (vs "
+        f"no_factcheck {round(nofc_excl, 3) if nofc_excl else '—'}).",
     ]
 
 

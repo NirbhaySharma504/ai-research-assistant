@@ -8,18 +8,20 @@ Headline figure is the **median** (robust): RAGAS `answer_relevancy` occasionall
 
 | Variant | N | Faithfulness | Answer Relevancy | Context Precision |
 |---------|:-:|:-:|:-:|:-:|
-| full | 12 | 1.000 (0.975) | 0.921 (0.631) | 0.970 (0.889) |
-| no_factcheck | 12 | 0.948 (0.910) | 0.958 (0.871) | 1.000 (0.991) |
+| full | 12 | 0.978 (0.936) | 0.957 (0.774) | 0.974 (0.964) |
+| no_factcheck | 12 | 0.976 (0.908) | 0.834 (0.604) | 0.982 (0.937) |
 
-## Ablation: contribution of the fact-checker (median)
+## Ablation: contribution of the fact-checker
 
-| Metric | full | no_factcheck | Δ (full − ablation) |
-|--------|:-:|:-:|:-:|
-| faithfulness | 1.000 | 0.948 | +0.052 |
-| answer_relevancy | 0.921 | 0.958 | -0.037 |
-| context_precision | 0.970 | 1.000 | -0.030 |
+**Controlled:** both variants are synthesized & scored over the *identical* retrieved corpus (built once per question); the only changed variable is the fact-checker's verified claims. Δ shown for both median and mean.
+
+| Metric | full (med/mean) | no_factcheck (med/mean) | Δ median | Δ mean |
+|--------|:-:|:-:|:-:|:-:|
+| faithfulness | 0.978 / 0.936 | 0.976 / 0.908 | +0.002 | +0.028 |
+| answer_relevancy | 0.957 / 0.774 | 0.834 / 0.604 | +0.123 | +0.170 |
+| context_precision | 0.974 / 0.964 | 0.982 / 0.937 | -0.008 | +0.027 |
 
 ## Distribution & robustness
 
-- **Faithfulness (full):** 8/12 queries scored a perfect 1.0, which is why the median pins to 1.000; the mean (0.975, min 0.85) better reflects the full distribution.
-- **Answer relevancy (full):** 4/12 queries scored exactly 0.0. Each was re-run and the answer read manually — all were substantive (1.6k–2.6k chars) and directly on-topic; RAGAS's *noncommittal* classifier misfired (2 of them scored 0.95–1.0 on a re-run, 2 reproduced 0.0 despite clearly relevant content). These are tool artifacts, not quality failures. **Excluding them, mean answer_relevancy = 0.947** (vs no_factcheck 0.95) — i.e. the fact-checker does not materially affect relevancy.
+- **Faithfulness (full):** 6/12 of the queries scored a perfect 1.0; the mean (0.936, min 0.733) reflects the full distribution.
+- **Answer relevancy (full):** 2/12 queries scored exactly 0.0. Their answers are saved in `results.json` (`answer_preview`) and were inspected: each is a substantive, on-topic answer — RAGAS's *noncommittal* classifier misfiring, not a quality failure. **Excluding these artifacts, mean answer_relevancy = 0.929** (vs no_factcheck 0.906).
